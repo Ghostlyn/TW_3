@@ -14,10 +14,8 @@ public class ui_test extends JFrame {
     private JButton startGameBtn = new JButton("开始游戏");
     private JLabel durationPromtLabel = new JLabel("动画间隔设置(ms为单位)");
     private JTextField durationTextField = new JTextField();
-
     private JLabel RowLabel = new JLabel("矩阵行数");
     private JTextField RowTextField = new JTextField();
-
     private JLabel ColumnLabel = new JLabel("矩阵列数");
     private JTextField ColumnTextField = new JTextField();
 
@@ -58,6 +56,10 @@ public class ui_test extends JFrame {
         buttonPanel.add(startGameBtn);
         buttonPanel.add(durationPromtLabel);
         buttonPanel.add(durationTextField);
+        buttonPanel.add(RowLabel);
+        buttonPanel.add(RowTextField);
+        buttonPanel.add(ColumnLabel);
+        buttonPanel.add(ColumnTextField);
         buttonPanel.setBackground(Color.WHITE);
 
         getContentPane().add("North", buttonPanel);
@@ -117,8 +119,8 @@ public class ui_test extends JFrame {
                 //获取时间
                 try {
                     duration = Integer.parseInt(durationTextField.getText().trim());
-                    Integer row = Integer.parseInt(RowLabel.getText().trim());
-                    Integer cloum = Integer.parseInt(ColumnLabel.getText().trim());
+                    Integer row = Integer.parseInt(RowTextField.getText().trim());
+                    Integer cloum = Integer.parseInt(RowTextField.getText().trim());
                     cellMatrix = text.initMatrix(row,cloum);
                     initGridLayout(cellMatrix);
                     giveColor(cellMatrix);
