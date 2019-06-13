@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ui_testTest {
+public class lifeGame {
 
     @Test
     public void test() {
-//        ui_test u = new ui_test();
+//        LifeGame u = new LifeGame();
 //        u.setVisible(true);
     }
 

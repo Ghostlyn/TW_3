@@ -11,11 +11,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.concurrent.TimeUnit;
 
-public class ui_test extends JFrame {
+public class LifeGame extends JFrame {
 
     private JButton startGameBtn = new JButton("开始新游戏");
     private JButton pauseGameBtn = new JButton("暂停游戏");
-//    private JButton startSpecialGameBtn = new JButton("定制初始化");
+    private JButton startSpecialGameBtn = new JButton("定制初始化");
     private JLabel durationPromtLabel = new JLabel("动画间隔设置(ms为单位)", JLabel.CENTER);
     private JTextField durationTextField = new JTextField();
     private JLabel RowLabel = new JLabel("矩阵行数",JLabel.CENTER);
@@ -58,27 +58,25 @@ public class ui_test extends JFrame {
 
     private boolean speicalOn = false;
 
-    public ui_test() throws Exception {
+    public LifeGame() throws Exception {
         setTitle("生命游戏");
-//        cellMatrix = text.initMatrix(20,20);
         startGameBtn.addActionListener(new StartGameActioner());
-//        startSpecialGameBtn.addActionListener(new StartSpecialGameActioner());
+        startSpecialGameBtn.addActionListener(new StartSpecialGameActioner());
         pauseGameBtn.addActionListener(new PauseGameActioner());
-//        buttonPanel.add(openFileBtn);
         buttonPanel.add(startGameBtn);
-        buttonPanel.add(pauseGameBtn);
-//        buttonPanel.add(startSpecialGameBtn);
+
+        buttonPanel.add(startSpecialGameBtn);
         buttonPanel.add(durationPromtLabel);
         buttonPanel.add(durationTextField);
         buttonPanel.add(RowLabel);
         buttonPanel.add(RowTextField);
         buttonPanel.add(ColumnLabel);
         buttonPanel.add(ColumnTextField);
+        buttonPanel.add(pauseGameBtn);
 
         buttonPanel.setBackground(Color.WHITE);
 
         getContentPane().add("North", buttonPanel);
-//        initGridLayout(cellMatrix);
 
         this.setSize(1500, 1200);
         this.setVisible(true);
@@ -86,19 +84,6 @@ public class ui_test extends JFrame {
         durationTextField.setHorizontalAlignment(JTextField.CENTER);
         RowTextField.setHorizontalAlignment(JTextField.CENTER);
         ColumnTextField.setHorizontalAlignment(JTextField.CENTER);
-//        giveColor(cellMatrix);
-//
-//        while(count>0){
-////            gridPanel.removeAll();
-////            gridPanel.repaint();
-////            initGridLayout(cellMatrix);
-//            cellMatrix=transform.tran(cellMatrix);
-////            Util.display(cellMatrix);
-//            giveColor(cellMatrix);
-////            gridPanel.revalidate();
-//            Thread.sleep(500);
-//            count--;
-//        }
     }
 
 
@@ -133,7 +118,6 @@ public class ui_test extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             stop = true;
-//            if (!isStart) {
                 System.out.println("11111");
                 //获取时间
                 try {
@@ -156,62 +140,56 @@ public class ui_test extends JFrame {
                 gridPanel.revalidate();
                 giveColor(cellMatrix);
                 new Thread(new GameControlTask()).start();
-//                isStart = true;
-//                stop = false;
                 pauseGameBtn.setText("暂停游戏");
-//            }
-//            else {
-//                System.out.println("2222");
-//                stop = true;
-//                isStart = false;
-//                startGameBtn.setText("开始游戏");
-//            }
         }
     }
 
-//    private class StartSpecialGameActioner implements ActionListener {
-//        public void actionPerformed(ActionEvent e) {
-//            System.out.println(speicalOn);
-//            if (!speicalOn) {
-//                try {
-//                    duration = Integer.parseInt(durationTextField.getText().trim());
-//                    row = Integer.parseInt(RowTextField.getText().trim());
-//                    col = Integer.parseInt(RowTextField.getText().trim());
-//                } catch (NumberFormatException e1) {
-//                    duration = DEFAULT_DURATION;
-//                    row = DEFAULT_ROW;
-//                    col = DEFAULT_COL;
-//                }
-//                cellMatrix = new int[row][col];
-//                initGridLayout(cellMatrix);
-//                gridPanel.revalidate();
-//                speicalOn = true;
-//            } else {
-//                try {
-//                    for (int i = 0; i < row; i++) {
-//                        for (int j = 0; j < col; j++) {
-//                            Document doc = textMatrix[i][j].getDocument();
-//                            if (doc.getLength() > 0) {
-//                                System.out.println(doc.getText(0, doc.getLength()));
-//                                cellMatrix[i][j] = 1;
-//                            }
-//                        }
-//                    }
-//                    Util.display(cellMatrix);
-//                    System.out.println("qhgwfevasjbdfjhsbf" +
-//                            "");
-//                    giveColor(cellMatrix);
-//                    speicalOn = false;
-//                    new Thread(new GameControlTask()).start();
-//
-//                } catch (Exception e1) {
-//                    e1.printStackTrace();
-//                }
-//
-//            }
-//
-//        }
-//    }
+    private class StartSpecialGameActioner implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            System.out.println(speicalOn);
+            if (!speicalOn) {
+                try {
+                    duration = Integer.parseInt(durationTextField.getText().trim());
+                    row = Integer.parseInt(RowTextField.getText().trim());
+                    col = Integer.parseInt(ColumnTextField.getText().trim());
+                } catch (NumberFormatException e1) {
+                    duration = DEFAULT_DURATION;
+                    row = DEFAULT_ROW;
+                    col = DEFAULT_COL;
+                }
+                System.out.println("row: " + row + " col: " + col);
+                cellMatrix = new int[row][col];
+                initGridLayout(cellMatrix);
+                giveColor(cellMatrix);
+                gridPanel.revalidate();
+                speicalOn = true;
+            } else {
+                try {
+                    cellMatrix = new int[row][col];
+                    for (int i = 0; i < row; i++) {
+                        for (int j = 0; j < col; j++) {
+                            Document doc = textMatrix[i][j].getDocument();
+                            if (doc.getLength() > 0) {
+                                System.out.println(doc.getText(0, doc.getLength()));
+                                cellMatrix[i][j] = 1;
+                            }
+                            textMatrix[i][j].setText("");
+                        }
+                    }
+                    System.out.println("special------------");
+                    Util.display(cellMatrix);
+                    giveColor(cellMatrix);
+                    speicalOn = false;
+                    new Thread(new GameControlTask()).start();
+
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+
+            }
+
+        }
+    }
 
     private class PauseGameActioner implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -238,7 +216,6 @@ public class ui_test extends JFrame {
     private class GameControlTask implements Runnable {
         public void run() {
             while (!stop) {
-                Util.display(cellMatrix);
                 cellMatrix = transform.tran(cellMatrix);
                 giveColor(cellMatrix);
                 try {
