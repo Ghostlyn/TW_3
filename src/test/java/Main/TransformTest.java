@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 public class TransformTest {
 
-    //private int[][] testMatrix = new int[3][3];//{{0,0,0},{0,1,0},{0,0,0}};
+    private int[][] testMatrix = new int[3][3];//{{0,0,0},{0,1,0},{0,0,0}};
     int[][] indexSpecial =new int[][]{{1,2,4,5},{1,2,1,8}};
     Matrix testSpecialMatrix=new Matrix();
 
@@ -28,6 +28,10 @@ public class TransformTest {
             Util.display(init);
             System.out.println();
         }
+    }
+
+    @Test
+    public void testPositionCount() {
 
     }
 

@@ -24,6 +24,8 @@ public class LifeGame extends JFrame {
     private JTextField ColumnTextField = new JTextField();
 
 
+    private JButton xButton = new JButton("X");
+
     private Transform transform = new Transform();
     private int[][] cellMatrix;
     /**
@@ -63,8 +65,10 @@ public class LifeGame extends JFrame {
         startGameBtn.addActionListener(new StartGameActioner());
         startSpecialGameBtn.addActionListener(new StartSpecialGameActioner());
         pauseGameBtn.addActionListener(new PauseGameActioner());
-        buttonPanel.add(startGameBtn);
 
+        xButton.addActionListener(new ShapeActioner());
+
+        buttonPanel.add(startGameBtn);
         buttonPanel.add(startSpecialGameBtn);
         buttonPanel.add(durationPromtLabel);
         buttonPanel.add(durationTextField);
@@ -73,6 +77,8 @@ public class LifeGame extends JFrame {
         buttonPanel.add(ColumnLabel);
         buttonPanel.add(ColumnTextField);
         buttonPanel.add(pauseGameBtn);
+
+        buttonPanel.add(xButton);
 
         buttonPanel.setBackground(Color.WHITE);
 
@@ -118,29 +124,29 @@ public class LifeGame extends JFrame {
 
         public void actionPerformed(ActionEvent e) {
             stop = true;
-                System.out.println("11111");
-                //获取时间
-                try {
-                    duration = Integer.parseInt(durationTextField.getText().trim());
-                    row = Integer.parseInt(RowTextField.getText().trim());
-                    col = Integer.parseInt(RowTextField.getText().trim());
-                } catch (NumberFormatException e1) {
-                    duration = DEFAULT_DURATION;
-                    row = DEFAULT_ROW;
-                    col = DEFAULT_COL;
-                }
-                stop = false;
-                isPause = false;
-                System.out.println(duration);
-                System.out.println("isStart:" + isStart);
-                System.out.println("isPause:" + isPause);
-                System.out.println("isStop:" + stop);
-                cellMatrix = text.initMatrix(row,col);
-                initGridLayout(cellMatrix);
-                gridPanel.revalidate();
-                giveColor(cellMatrix);
-                new Thread(new GameControlTask()).start();
-                pauseGameBtn.setText("暂停游戏");
+            System.out.println("11111");
+            //获取时间
+            try {
+                duration = Integer.parseInt(durationTextField.getText().trim());
+                row = Integer.parseInt(RowTextField.getText().trim());
+                col = Integer.parseInt(RowTextField.getText().trim());
+            } catch (NumberFormatException e1) {
+                duration = DEFAULT_DURATION;
+                row = DEFAULT_ROW;
+                col = DEFAULT_COL;
+            }
+            stop = false;
+            isPause = false;
+            System.out.println(duration);
+            System.out.println("isStart:" + isStart);
+            System.out.println("isPause:" + isPause);
+            System.out.println("isStop:" + stop);
+            cellMatrix = text.initMatrix(row,col);
+            initGridLayout(cellMatrix);
+            gridPanel.revalidate();
+            giveColor(cellMatrix);
+            new Thread(new GameControlTask()).start();
+            pauseGameBtn.setText("暂停游戏");
         }
     }
 
@@ -176,7 +182,6 @@ public class LifeGame extends JFrame {
                             textMatrix[i][j].setText("");
                         }
                     }
-                    System.out.println("special------------");
                     Util.display(cellMatrix);
                     giveColor(cellMatrix);
                     speicalOn = false;
@@ -191,23 +196,39 @@ public class LifeGame extends JFrame {
         }
     }
 
+
+    private class ShapeActioner implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            try {
+                duration = Integer.parseInt(durationTextField.getText().trim());
+                row = Integer.parseInt(RowTextField.getText().trim());
+                col = Integer.parseInt(ColumnTextField.getText().trim());
+            } catch (NumberFormatException e1) {
+                duration = DEFAULT_DURATION;
+                row = DEFAULT_ROW;
+                col = DEFAULT_COL;
+            }
+            int[][] shapeX = SpecialShape.shapeX(row,col);
+            cellMatrix = text.initSpecialMatrix(row,col, shapeX);
+            initGridLayout(cellMatrix);
+            gridPanel.revalidate();
+            giveColor(cellMatrix);
+            new Thread(new GameControlTask()).start();
+            pauseGameBtn.setText("暂停游戏");
+        }
+    }
+
     private class PauseGameActioner implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             if (!isPause) {
                 isPause = true;
                 stop = true;
-                System.out.println("isStart:" + isStart);
-                System.out.println("isPause:" + isPause);
-                System.out.println("isStop:" + stop);
                 pauseGameBtn.setText("继续游戏");
             }
             else {
                 isPause = false;
                 stop = false;
                 new Thread(new GameControlTask()).start();
-                System.out.println("isStart:" + isStart);
-                System.out.println("isPause:" + isPause);
-                System.out.println("isStop:" + stop);
                 pauseGameBtn.setText("暂停游戏");
             }
         }

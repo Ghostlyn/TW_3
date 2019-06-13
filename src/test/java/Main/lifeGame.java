@@ -8,8 +8,7 @@ public class lifeGame {
 
     @Test
     public void test() {
-//        LifeGame u = new LifeGame();
-//        u.setVisible(true);
+
     }
 
 }
